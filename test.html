@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+	
+		<meta charset="utf-8">
+		<title>Test IndexedDB.js</title>
+		
+		<script src="indexeddb.js"></script>
+		
+		<script type="text/javascript">
+		
+			var storage = new IndexedDB(
+				'testDatabase',
+				1,
+				{
+					testStore: {
+						options: {
+							keyPath: 'guid',
+							autoIncrement: true
+						},
+						indexes: {
+							name: 'testIndex',
+							keyPath: 'testIndex',
+							options: {unique: false}
+						},
+						defaultValues: {
+							name: 'this is an object added at the database creation',
+							textIndex: 1
+						}
+					}
+				},
+				{
+					fn : function () {
+						initTests();
+					},
+					context: window
+				},
+				{
+					fn: function (event) {
+						setTimeout(
+							function () {
+								initTests();	//launch via setTimeout to leave indexeddb finish its setVersion transaction, otherwise it will fail
+							}, 
+							100
+						);
+					},
+					context: window
+				}
+			);
+			
+			function initTests() {
+			
+				setTimeout(create, 100);
+				setTimeout(read, 200);
+				setTimeout(update, 300);
+				setTimeout(find, 400);
+				setTimeout(remove, 500);
+				setTimeout(empty, 600);
+				setTimeout(destroy, 700);
+			
+			}
+			
+			function create() {
+			
+				storage.create(
+					'testStore',
+					{
+						name: 'another object',
+						testIndex: 1
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object creation: OK!<br/>';
+					
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object creation: NOK!<br/>';
+					
+					}
+				);
+			
+			}
+			
+			function read() {
+			
+				storage.read(
+					'testStore',
+					1,
+					function (event) {
+					
+						document.body.innerHTML += 'Object read: OK!<br/>';
+					
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object read: NOK!<br/>';
+					
+					}
+				);
+			
+			}
+			
+			function update() {
+			
+				storage.update(
+					'testStore',
+					{
+						guid: 1,
+						name: 'default object updated',
+						testIndex: 2
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object update: OK!<br/>';
+					
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object update: NOK!<br/>';
+					
+					}
+				);
+			
+			}
+			
+			function find() {
+			
+				storage.find(
+					'testStore',
+					'testIndex',
+					[1, 2],
+					function (event) {
+					
+						document.body.innerHTML += 'Object search: OK!<br/>';
+					
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object search: NOK!<br/>';
+					
+					}
+				);
+			
+			}
+			
+			function remove() {
+			
+				storage.remove(
+					'testStore',
+					1,
+					function (event) {
+					
+						document.body.innerHTML += 'Object removal: OK!<br/>';
+					
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object removal: NOK!<br/>';
+					
+					}
+				);
+			
+			}
+			
+			function empty() {
+			
+				storage.empty(
+					'testStore',
+					function (event) {
+					
+						document.body.innerHTML += 'Object store cleared: OK!<br/>';
+					
+					},
+					function (event) {
+					
+						document.body.innerHTML += 'Object store cleared: NOK!<br/>';
+					
+					}
+				);
+			
+			}
+			
+			function destroy() {
+			
+				storage.destroyDatabase();
+				
+				document.body.innerHTML += 'Database destroyed: OK!';
+			
+			}
+		
+		</script>
+	
+	</head>
+
+	<body>
+
+		
+
+	</body>
+
+</html>
