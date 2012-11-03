@@ -388,7 +388,7 @@ IndexedDB.prototype = {
 	
 	update: function (storeName, object, onSuccess, onError, context) {
 	
-		this.create(storeName, object, onSucces, onError, context);
+		this.create(storeName, object, onSuccess, onError, context);
 	
 	},
 	
