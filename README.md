@@ -148,7 +148,7 @@ Alias of the create method, but this time in the object parameter the keyPath pr
 	IndexedDB.find(
 		'objectStoreName',
 		'indexName',
-		'value to search'|[lowerBound, upperBound], //if array bounds are included in the search
+		'value to search'|[lowerBound, upperBound], //if array bounds are included in the search, if upperBound equals zero it will search for all values greater than the lowerBound
 		function (event) {
 			//will be called when objects are retrieved
 			//all objects are not retrieved at once

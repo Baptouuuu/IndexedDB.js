@@ -502,10 +502,35 @@ IndexedDB.prototype = {
 		
 			var transaction = this.db.transaction([storeName], this.transactionModes.READ_ONLY),
 				store = transaction.objectStore(storeName),
-				keyRange = (term instanceof Array && term.length === 2) ? this.keyRange.bound(term[0], term[1]) : this.keyRange.only(term),
+				keyRange = null,
 				index = store.index(indexName),
-				request = index.openCursor(keyRange),
+				request = null,
 				context = context || window;
+			
+			if (term instanceof Array && term.length === 2) {
+			
+				if (term[0] === 0) {
+				
+					keyRange = this.keyRange.upperBound(term[1]);
+				
+				} else if (term[1] === 0) {
+				
+					keyRange = this.keyRange.lowerBound(term[0]);
+				
+				} else {
+				
+					keyRange = this.keyRange.bound(term[0], term[1]);
+				
+				}
+			
+			} else {
+			
+				keyRange = this.keyRange.only(term);
+			
+			}
+			
+			
+			request = index.openCursor(keyRange);
 			
 			if (onSuccess !== undefined) {
 			
