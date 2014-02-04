@@ -1,6 +1,8 @@
 IndexedDB.js
 ============
 
+#This repository is no longer maintained, it's now integrated to the [Sy](http://github.com/Baptouuuu/Sy) framework
+
 IndexedDB.js let's you manipulate easily this database in your application. Before using it, make sure it's working properly on your targeted browsers.
 
 It has been tested with Chrome 21+ and Firefox 15+.
